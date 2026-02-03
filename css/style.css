@@ -481,6 +481,42 @@ body {
     font-size: 0.95rem;
 }
 
+/* TL;DR Translation: side-by-side before/after with arrow */
+.translation-pair {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px;
+}
+
+/* Slightly thinner outer frame for the translation pair */
+.translation-pair-wrapper {
+    border-width: 3px;
+    box-shadow: 4px 4px 0px var(--comic-border);
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.comic-frame-wrapper .translation-pair img {
+    width: 0;
+    flex: 1 1 0;
+    height: clamp(280px, 68vw, 360px);
+    object-fit: contain;
+    background: var(--white);
+    border-radius: 4px;
+}
+
+.translation-arrow {
+    flex: 0 0 auto;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4vw, 3.2rem);
+    color: var(--dark);
+    opacity: 0.8;
+    line-height: 1;
+}
+
 /* Section Styles */
 .section {
     padding: var(--section-padding);
@@ -519,7 +555,7 @@ body {
 }
 
 .abstract-content {
-    max-width: 900px;
+    max-width: 1050px;
     margin: 0 auto;
 }
 
@@ -818,6 +854,24 @@ body {
     font-weight: 500;
 }
 
+/* Column alignment overrides (keep scope narrow via table ids) */
+#main-results-table th:nth-child(1),
+#main-results-table td:nth-child(1),
+#main-results-table th:nth-child(2),
+#main-results-table td:nth-child(2),
+#style-alignment-table th:nth-child(1),
+#style-alignment-table td:nth-child(1) {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Appendix empirical tables: center specified columns (Metric/Dataset; Benchmark/Method) */
+#appendix-a1-table td:first-child,
+#appendix-a2-table td:first-child {
+    text-align: center;
+    vertical-align: middle;
+}
+
 .results-table .highlight-row {
     background: var(--comic-yellow);
 }
@@ -857,10 +911,17 @@ body {
 
 .chart-container.academic-chart {
     background: var(--white);
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 20px;
+    border: 3px solid var(--comic-border);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 5px 5px 0px var(--comic-border);
     height: 350px;
+}
+
+/* Figure 4: give extra room so chart labels don't get clipped */
+#distribution-chart-container {
+    max-width: 720px;
+    height: 390px;
 }
 
 .figure-caption {
@@ -870,6 +931,13 @@ body {
     color: var(--gray);
     text-align: justify;
     line-height: 1.6;
+}
+
+/* Appendix captions: match full table/figure width (avoid narrow 800px cap) */
+.figure-caption.appendix-caption-wide {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .figure-caption strong {
@@ -892,6 +960,15 @@ body {
     font-size: 0.95rem;
     line-height: 1.7;
     text-align: center;
+}
+
+/* Appendix: Qualitative Comparison heading */
+.appendix-section .qualitative-comparison-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--dark);
+    font-size: 1.35rem;
+    font-weight: 700;
 }
 
 /* Table Enhancements */
@@ -1388,7 +1465,8 @@ body {
     position: relative;
     border: 4px solid var(--comic-border);
     border-radius: 8px;
-    overflow: hidden;
+    /* Allow the dataset label to overlap the frame border */
+    overflow: visible;
     box-shadow: 6px 6px 0px var(--comic-border);
     background: var(--white);
 }
@@ -1398,12 +1476,18 @@ body {
     height: auto;
     display: block;
     cursor: pointer;
+    /* Match the inner radius (outer radius - border thickness) */
+    border-radius: 4px;
 }
 
 .frame-overlay {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    /* Centered at the top; the border should pass through the label midline */
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    pointer-events: none;
 }
 
 .frame-label {
@@ -1414,6 +1498,7 @@ body {
     font-size: 0.8rem;
     font-weight: 600;
     border: 2px solid var(--comic-border);
+    pointer-events: none;
 }
 
 .gallery-caption {
@@ -1436,7 +1521,7 @@ body {
     padding: 30px;
     position: relative;
     box-shadow: 6px 6px 0px var(--comic-border);
-    max-width: 800px;
+    max-width: 940px;
     margin: 0 auto;
 }
 
@@ -1752,42 +1837,93 @@ body {
 
 /* Math Definition Box */
 .math-definition {
-    background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
-    border-left: 4px solid var(--secondary);
-    padding: 20px 25px;
-    margin: 20px 0;
-    border-radius: 0 8px 8px 0;
+    background: #eef2f6;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-shadow: none;
+    padding: 18px 24px;
+    margin: 18px auto 16px;
+    max-width: 700px;
+    text-align: center;
+}
+
+.math-definition > p {
+    margin: 0 0 10px;
+    color: var(--dark);
+    font-weight: 600;
+    letter-spacing: 0.2px;
 }
 
 .equation-block {
-    margin: 15px 0;
+    margin: 0;
+    padding: 2px 0 0;
+    background: transparent;
+    border: none;
 }
 
 .equation {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 10px 0;
+    display: grid;
+    grid-template-columns: 50px 130px 190px;
+    align-items: baseline;
+    justify-content: center;
+    column-gap: 12px;
+    row-gap: 6px;
+    padding: 8px 6px;
     font-family: 'Times New Roman', serif;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+}
+
+
+.equation + .equation {
+    margin-top: 4px;
 }
 
 .eq-label {
-    font-weight: bold;
+    font-weight: 600;
     color: var(--dark);
-    min-width: 60px;
+    letter-spacing: 0.2px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    display: inline-block;
+    text-align: left;
+    min-width: 90px;
 }
 
 .eq-math {
     font-style: italic;
-    color: #2c5282;
-    font-size: 1.2rem;
+    color: #1f3b5b;
+    font-size: 1.15rem;
+    text-align: left;
 }
 
 .eq-note {
-    color: var(--gray);
-    font-size: 0.9rem;
+    color: #64748b;
+    font-size: 0.88rem;
     font-style: normal;
+    text-align: left;
+}
+
+/* Keep the efficiency chart border consistent with the cost function box */
+#efficiency-chart-container {
+    border-width: 2px;
+    box-shadow: 4px 4px 0px var(--comic-border);
+}
+
+@media (max-width: 700px) {
+    .math-definition {
+        padding: 18px 18px;
+        margin: 18px 0;
+    }
+
+    .equation {
+        grid-template-columns: 1fr;
+        padding: 10px 6px;
+    }
+
+    .eq-note {
+        text-align: left;
+    }
 }
 
 /* Theorem Box */
@@ -1919,28 +2055,41 @@ body {
 /* Insight Box */
 .insight-box {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
     background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
     border: 1px solid #81c784;
     border-radius: 12px;
     padding: 25px;
     margin-top: 30px;
+    text-align: center;
+}
+
+.insight-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .insight-icon {
-    font-size: 2.5rem;
-    flex-shrink: 0;
+    font-size: 2rem;
+    line-height: 1;
 }
 
-.insight-content h4 {
-    font-size: 1.1rem;
+.insight-title {
+    font-size: 1.15rem;
     color: #2e7d32;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin: 0;
 }
 
-.insight-content p {
+.insight-text {
     color: #1b5e20;
     line-height: 1.6;
+    margin: 0;
+    max-width: 900px;
 }
 
 /* Metrics Highlight */
@@ -1949,11 +2098,13 @@ body {
     align-items: center;
     justify-content: center;
     gap: 30px;
-    margin-top: 30px;
+    margin: 30px auto 0;
     padding: 25px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #cbd5e1;
     border-radius: 12px;
     flex-wrap: wrap;
+    max-width: 700px;
 }
 
 .metric-card {
@@ -1995,8 +2146,52 @@ body {
 }
 
 .metric-arrow {
-    font-size: 1.5rem;
-    color: var(--gray);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #2e7d32;
+}
+
+.metric-delta {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2e7d32;
+    white-space: nowrap;
+}
+
+.metric-arrow-icon {
+    position: relative;
+    width: 120px;
+    height: 18px;
+    color: #2e7d32;
+    /* Hide the literal arrow character; we draw our own */
+    font-size: 0;
+    line-height: 0;
+}
+
+.metric-arrow-icon::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(100% - 16px);
+    height: 5px;
+    background: currentColor;
+    border-radius: 999px;
+}
+
+.metric-arrow-icon::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: 16px solid currentColor;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
 }
 
 .metric-result {
@@ -2031,7 +2226,7 @@ body {
         gap: 15px;
     }
     
-    .metric-arrow {
+    .metric-arrow-icon {
         transform: rotate(90deg);
     }
     
