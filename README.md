@@ -1,4 +1,4 @@
-# Thinking with Comics - ICML 2026 Project Website (Full Version)
+# Thinking with Comics - Project Website (Full Version)
 
 这是 **"Thinking with Comics: Enhancing Multimodal Reasoning through Structured Visual Storytelling"** 论文的完整版项目主页。
 
